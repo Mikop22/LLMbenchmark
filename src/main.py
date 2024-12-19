@@ -17,7 +17,7 @@ def main():
     results = []
     for index, row in df.iterrows():
         statement = row["statement"]
-        true_label = row["true_label"]
+        truth_score = row["truth_score"]
 
         print(f"Verifying statement {index + 1}/{len(df)}: {statement}")
 
@@ -25,34 +25,33 @@ def main():
         api_response = verify_statement_with_api(statement, api_key)
         parsed_response = parse_api_response(api_response)
 
-        predicted_label = parsed_response["predicted_label"]
+        confidence_score = parsed_response["confidence_score"]
         api_response_summary = parsed_response["api_response_summary"]
 
-        # 4. Score the prediction
-        score = score_classification(true_label, predicted_label)
+        # 4. Score the prediction (relative error percentage)
+        score = score_classification(truth_score, confidence_score)
 
         results.append({
             "statement_id": index + 1,
             "statement": statement,
-            "true_label": true_label,
-            "predicted_label": predicted_label,
+            "truth_score": truth_score,
+            "confidence_score": confidence_score,
             "api_response_summary": api_response_summary,
             "score": score
         })
-        print(f"Predicted Label: {predicted_label}, Summary: {api_response_summary}")
+        print(f"Predicted Label: {confidence_score}, Summary: {api_response_summary}")
 
-    # 5. Calculate total score
+    # 5. Calculate total score (lower is better)
     total_score = calculate_total_score(results)
-    final_percentage_score = (10 - total_score / 10 ) * 100
 
     # 6. Prepare output data
     output_data = {
-        "final_score": final_percentage_score,
+        "final_score": total_score,
         "predictions": results
     }
 
     # 7. Save results to JSON file
-    output_filepath = "data"  # Replace with your desired output path
+    output_filepath = "data/results.json"  # Replace with your desired output path
     try:
         with open(output_filepath, "w") as f:
             json.dump(output_data, f, indent=2)
