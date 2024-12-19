@@ -49,13 +49,10 @@ def calculate_total_score(results):
     for result in results:
         true_label = result.get('true_label')
         predicted_label = result.get('predicted_label')
-        confidence_score = result.get('confidence_score')
-
         if true_label is None or predicted_label is None:
             print("Error: 'true_label' or 'predicted_label' missing in results.")
             return None
 
-        total_score += score_classification(true_label, predicted_label) + confidence_score
+        total_score += score_classification(true_label, predicted_label)
 
     return total_score
-calculate_total_score()
