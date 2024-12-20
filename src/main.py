@@ -7,7 +7,7 @@ def main():
     """
     Main function to run the LLM news verification benchmark.
     """
-    api_key = "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"  # Replace with your actual API key
+    api_key = ""  # Replace with your actual API key
       # Replace with your dataset path
 
     # 1. Load data
