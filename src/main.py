@@ -5,7 +5,7 @@ from evaluation import score_classification, calculate_total_score
 
 def main():
     """
-    Main function to run the LLM news verification benchmark.
+    Main function to run the LLM verification benchmark.
     """
     api_key = ""  # Replace with your actual API key
       # Replace with your dataset path
